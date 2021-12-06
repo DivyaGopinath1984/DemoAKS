@@ -1,25 +1,45 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+- none
 
-pool:
-  vmImage: ubuntu-latest
+resources:
+- repo: self
 
-steps:
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Azure Pass - Sponsorship(1)(66203593-eb00-4e9b-9838-089b29e946d7)'
-    subscriptionId: '66203593-eb00-4e9b-9838-089b29e946d7'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'demo-rsg'
-    location: 'East US'
-    templateLocation: 'URL of the file'
-    csmFileLink: 'https://github.com/anitha-john/AKS_ARM_Template/blob/main/CreateAKSCluster.json'
-    csmParametersFileLink: 'https://github.com/anitha-john/AKS_ARM_Template/blob/main/CreateAKSCluster-parameters.json'
-    deploymentMode: 'Incremental'
-    deploymentName: 'DeployPipelineTemplate'
+variables:
+  containerRegistryName: 'dssdemoregnov'
+  kubernetesClusterName: "dssaksclusternov"
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: replacetokens@4
+      inputs:
+        targetFiles: '$(Build.SourcesDirectory)/**/CreateAKSCluster-parameters.json'
+        encoding: 'auto'
+        tokenPattern: 'default'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        actionOnNoFiles: 'continue'
+        enableTransforms: false
+        useLegacyPattern: false
+        enableTelemetry: true
+    
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'Azure - SS1'
+        subscriptionId: '51081bf2-da0d-4998-9462-b59b512f8690'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'Demo-rg'
+        location: 'East US'
+        templateLocation: 'Linked artifact'
+        csmFile: '$(Build.SourcesDirectory)/**/CreateAKSCluster.json'
+        csmParametersFile: '$(Build.SourcesDirectory)/**/CreateAKSCluster-parameters.json'
+        deploymentMode: 'Incremental'
+        deploymentName: 'AKSCluster'
