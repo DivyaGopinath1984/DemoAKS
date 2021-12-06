@@ -35,7 +35,7 @@ stages:
         buildContext: '.'
         tags: '$(tag)'
 
-    - task: replacetokens@4
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@4
       inputs:
         targetFiles: '**/deployment.yml'
         encoding: 'auto'
