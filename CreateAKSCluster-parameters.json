@@ -1,0 +1,21 @@
+{
+      "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "acrName": {
+          "value": "#{containerRegistryName}#"  
+        },
+        "clusterName": {
+          "value": "#{kubernetesClusterName}#"
+        },
+        "location": {
+          "value": "east us"
+        },
+        "linuxAdminUsername": {
+          "value": "azuretraining"
+        },
+        "sshRSAPublicKey": {
+          "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCpt1zpvvqDAq7RYLfFgWBl20x1+h8sDTqcun3syduI4ENvoNEH315+LKtZRiJm86j0CbCjxXHlKfPUBlHo9zi/vs5Jju9Knngw0qLbxn5FJ0avPsUpAaVIEsQRlcqjJX831iEQTahOiH+Q+m+wIrcO0Os+JsWF3XQVkjwTu0rCs+jCa/jewDOrBGfU8b3EknWn02R8Hyb3O5i1wREWa96MCG82VPoS37iqZttBChrVVtQu8YHsved7/SEPBJEtz/sw9cyqEly4/X823m2a8h2PXeblAhJ+TpUJofb1GcizoANRomffroZlLwN9pIe1CrnG/IM7tZUa5e+p9NaFvG8vsbX5QxEhYKHyNx+g4OOXwVh8V9iX6I3hv75/ZJrks25e3ZaQzC5NR3g55WGG5LAqob3X7uM+yuWu3b/OvNaRcDDgViIHfxur7xYNcA4wdoiZWTyuNQfLwFoVrzo7XHSBbjdSKoopl0TPPXfYjObP+9LEFYL3ala9WLnop/XOxDc= dsamantaray@APT04-2NX1BH2"
+        }
+      }
+}
