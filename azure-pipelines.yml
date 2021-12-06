@@ -17,7 +17,7 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: replacetokens@4
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@4
       inputs:
         targetFiles: '$(Build.SourcesDirectory)/**/CreateAKSCluster-parameters.json'
         encoding: 'auto'
