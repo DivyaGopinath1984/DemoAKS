@@ -13,13 +13,13 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Azure Pass - Sponsorship(66203593-eb00-4e9b-9838-089b29e946d7)'
+    azureResourceManagerConnection: 'Azure Pass - Sponsorship(1)(66203593-eb00-4e9b-9838-089b29e946d7)'
     subscriptionId: '66203593-eb00-4e9b-9838-089b29e946d7'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'demo-rsg'
     location: 'East US'
     templateLocation: 'URL of the file'
-    csmFile: 'https://github.com/anitha-john/AKS_ARM_Template/blob/main/CreateAKSCluster.json'
-    csmParametersFile: 'https://github.com/anitha-john/AKS_ARM_Template/blob/main/CreateAKSCluster-parameters.json'
+    csmFileLink: 'https://github.com/anitha-john/AKS_ARM_Template/blob/main/CreateAKSCluster.json'
+    csmParametersFileLink: 'https://github.com/anitha-john/AKS_ARM_Template/blob/main/CreateAKSCluster-parameters.json'
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
