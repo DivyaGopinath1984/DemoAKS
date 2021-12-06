@@ -3,10 +3,10 @@
       "contentVersion": "1.0.0.0",
       "parameters": {
         "acrName": {
-          "value": "#{containerRegistryName}#"  
+          "value": "azure-training-anitha-acr"  
         },
         "clusterName": {
-          "value": "#{kubernetesClusterName}#"
+          "value": "azure-training-anitha-aks"
         },
         "location": {
           "value": "east us"
