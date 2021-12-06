@@ -33,8 +33,8 @@ stages:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'Azure - SS1'
-        subscriptionId: '51081bf2-da0d-4998-9462-b59b512f8690'
+        azureResourceManagerConnection: 'Azure Pass - Sponsorship(66203593-eb00-4e9b-9838-089b29e946d7)'
+        subscriptionId: '66203593-eb00-4e9b-9838-089b29e946d7'
         action: 'Create Or Update Resource Group'
         resourceGroupName: 'Demo-rg'
         location: 'East US'
