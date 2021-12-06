@@ -5,8 +5,8 @@ resources:
 - repo: self
 
 variables:
-  containerRegistryName: 'dssdemoregnov'
-  kubernetesClusterName: "dssaksclusternov"
+  containerRegistryName: 'dssdemoregnovAnitha'
+  kubernetesClusterName: "dssaksclusternovAnitha"
 
 stages:
 - stage: Build
