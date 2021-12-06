@@ -1,0 +1,109 @@
+trigger:
+- none
+
+variables:
+  vmImageName: 'ubuntu-latest'
+  azureResourceGroup: "Demo-rg"
+  azureSubscriptionEndPoint: 'AzureServiceConnection-SS2'
+  dockerRegistryServiceConnection: 'DssAzureContainerRegistry'
+  kubernetesServiceConnection: 'KubernetesServiceConnection'
+  dockerfilePath: 'HelloWorldApp.Web/Dockerfile'
+  containerRegistry: dssdemoregnovanitha.azurecr.io
+  imageRepository: 'helloworldapp'
+  tag: $(Build.BuildId)
+  secretName: 'kubernetes-principle-secret'   
+  kubernetesCluster: 'dssaksclusternovanitha'
+  ImageName: '$(containerRegistry)/$(imageRepository):$(tag)'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: '$(imageRepository)'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        buildContext: '.'
+        tags: '$(tag)'
+
+    - task: replacetokens@4
+      inputs:
+        targetFiles: '**/deployment.yml'
+        encoding: 'auto'
+        tokenPattern: 'default'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        actionOnNoFiles: 'continue'
+        enableTransforms: false
+        useLegacyPattern: false
+        enableTelemetry: true
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'manifests'
+        Contents: '*.yml'
+        TargetFolder: '$(build.artifactstagingdirectory)'
+        
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(build.artifactstagingdirectory)'
+        artifact: 'drop'
+        publishLocation: 'pipeline'
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy job
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'deccansoft'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifactName: 'drop'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: Kubernetes@1
+            displayName: kubectl apply using configFile
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscriptionEndpoint: $(azureSubscriptionEndPoint)
+              azureResourceGroup: $(azureResourceGroup)
+              kubernetesCluster: $(kubernetesCluster)
+              command: 'apply'
+              useConfigurationFile: true
+              configuration: '$(System.ArtifactsDirectory)/deployment.yml'
+              secretType: 'dockerRegistry'
+              containerRegistryType: 'Azure Container Registry'
+              azureSubscriptionEndpointForSecrets: $(azureSubscriptionEndPoint)
+              azureContainerRegistry: $(containerRegistry)
+              secretName: $(secretName)
+
+          - task: Kubernetes@1
+            displayName: kubectl apply using configFile
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscriptionEndpoint: $(azureSubscriptionEndPoint)
+              azureResourceGroup: $(azureResourceGroup)
+              kubernetesCluster: $(kubernetesCluster)
+              command: 'apply'
+              useConfigurationFile: true
+              configuration: '$(System.ArtifactsDirectory)/service.yml'
+              secretType: 'dockerRegistry'
+              containerRegistryType: 'Azure Container Registry'
+              azureSubscriptionEndpointForSecrets: $(azureSubscriptionEndPoint)
