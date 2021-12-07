@@ -4,15 +4,15 @@ trigger:
 variables:
   vmImageName: 'ubuntu-latest'
   azureResourceGroup: "Demo-rg"
-  azureSubscriptionEndPoint: 'AzureServiceConnection-SS2'
-  dockerRegistryServiceConnection: 'DssAzureContainerRegistry'
-  kubernetesServiceConnection: 'KubernetesServiceConnection'
+  azureSubscriptionEndPoint: 'Azure Pass - Sponsorship(70d03302-80d0-4597-ba74-e01b99ca052b)'
+  dockerRegistryServiceConnection: 'AzureContainerRegistry'
+  kubernetesServiceConnection: 'kubernetesserviceconnection'
   dockerfilePath: 'HelloWorldApp.Web/Dockerfile'
-  containerRegistry: dssdemoregnovanitha.azurecr.io
+  containerRegistry: dssdemoregnovdivya.azurecr.io
   imageRepository: 'helloworldapp'
   tag: $(Build.BuildId)
   secretName: 'kubernetes-principle-secret'   
-  kubernetesCluster: 'dssaksclusternovanitha'
+  kubernetesCluster: 'dssaksclusternovdivya'
   ImageName: '$(containerRegistry)/$(imageRepository):$(tag)'
 
 stages:
@@ -35,7 +35,7 @@ stages:
         buildContext: '.'
         tags: '$(tag)'
 
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@4
+    - task: replacetokens@4
       inputs:
         targetFiles: '**/deployment.yml'
         encoding: 'auto'
