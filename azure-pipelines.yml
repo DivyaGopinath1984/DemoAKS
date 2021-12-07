@@ -5,8 +5,8 @@ resources:
 - repo: self
 
 variables:
-  containerRegistryName: 'dssdemoregnovanitha'
-  kubernetesClusterName: "dssaksclusternovanitha"
+  containerRegistryName: 'dssdemoregnovdivya'
+  kubernetesClusterName: "dssaksclusternovdivya"
 
 stages:
 - stage: Build
@@ -17,7 +17,7 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@4
+    - task: replacetokens@4
       inputs:
         targetFiles: '$(Build.SourcesDirectory)/**/CreateAKSCluster-parameters.json'
         encoding: 'auto'
@@ -33,8 +33,8 @@ stages:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'Azure Pass - Sponsorship(66203593-eb00-4e9b-9838-089b29e946d7)'
-        subscriptionId: '66203593-eb00-4e9b-9838-089b29e946d7'
+        azureResourceManagerConnection: 'Azure Pass - Sponsorship(70d03302-80d0-4597-ba74-e01b99ca052b)'
+        subscriptionId: '70d03302-80d0-4597-ba74-e01b99ca052b'
         action: 'Create Or Update Resource Group'
         resourceGroupName: 'Demo-rg'
         location: 'East US'
@@ -43,3 +43,4 @@ stages:
         csmParametersFile: '$(Build.SourcesDirectory)/**/CreateAKSCluster-parameters.json'
         deploymentMode: 'Incremental'
         deploymentName: 'AKSCluster'
+       
