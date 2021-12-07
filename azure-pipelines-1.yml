@@ -37,7 +37,7 @@ stages:
 
     - task: replacetokens@4
       inputs:
-        targetFiles: '**/deployment.yml'
+        targetFiles: 'DemoAKS/manifests/deployment.yml'
         encoding: 'auto'
         tokenPattern: 'default'
         writeBOM: true
